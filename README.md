@@ -1,4 +1,4 @@
-# Inter-Disease.AI
+# Disease-Link.AI
 
 An integrated **AI-Driven Discovery of Multi-Condition Interactions** built using
 **Flask + Deep Neural Network models**.
@@ -8,7 +8,7 @@ Combining a powerful inter-disease model with specialized single-disease predict
 
 # 🚀 Overview
 
-Inter-Disease.AI simplifies early health risk assessment by allowing
+Disease-Link.AI simplifies early health risk assessment by allowing
 users to input medical parameters and instantly receive predictions for
 multiple diseases.\
 It serves as a complete end-to-end DL project: **datasets →
