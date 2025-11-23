@@ -53,7 +53,7 @@ Datasets included: - `diabetes.csv` -
 
 # 📂 Project Structure
 
-    Inter-Disease.AI/
+    Disease-Link.AI/
     │
     ├── app.py                      # Main Flask application
     ├── requirements.txt            # Dependencies
@@ -93,7 +93,7 @@ Datasets included: - `diabetes.csv` -
 ### 1️⃣ Clone the Repository
 
 ``` bash
-git clone https://github.com/akshat12375/Inter-Disease.AI
+git clone https://github.com/akshat12375/Disease-Link.AI
 cd Inter-Disease.AI
 ```
 
