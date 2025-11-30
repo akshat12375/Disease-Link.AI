@@ -1,77 +1,195 @@
 {% extends "layout.html" %}
+{% set no_default_css = true %}
+
+{% block head %}
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+  :root { --glass-bg: rgba(255,255,255,0.06); --glass-border: rgba(255,255,255,0.08); }
+
+  .gradient-anim {
+    background: linear-gradient(120deg,#0ea5e9 0%,#7c3aed 25%,#ef4444 50%,#f59e0b 75%,#10b981 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
+  }
+  @keyframes gradientShift {
+    0% { background-position:0% 50% }
+    50% { background-position:100% 50% }
+    100% { background-position:0% 50% }
+  }
+
+  .glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(8px) saturate(120%);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px) scale(.995);
+    transition: opacity .6s cubic-bezier(.2,.9,.2,1),
+                transform .6s cubic-bezier(.2,.9,.2,1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .tilt { transform-style: preserve-3d; transition: transform .25s ease; }
+  .accuracy-badge{ padding:.25rem .5rem; border-radius:9999px; font-weight:600; font-size:.75rem; }
+
+  @media (prefers-reduced-motion: reduce){
+    .gradient-anim, .reveal, .tilt { animation:none; transition:none; }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 
-<!-- Section: Cross Condition Analysis -->
-<section class="section">
- 
-  <div class="card-container single-card-center">
-    <div class="card large-card">
-      <img src="{{ url_for('static', filename='inter.jpg') }}" alt="Inter Disease">
-      <h2>Inter-Disease Insights</h2>
-      <p>
-        Understand how different diseases interact through shared symptoms,
-        overlapping biomarkers, and correlated risk patterns.
-        <br>
-        ACCURACY-89.71
-      </p>
-      <a href="{{ url_for('inter_disease') }}" class="btn">Explore</a>
+<section class="min-h-[80vh] md:min-h-[85vh] gradient-anim py-16 shadow-inner">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Hero -->
+    <div class="flex flex-col md:flex-row items-center justify-between gap-10 mb-10">
+      
+      <!-- Left -->
+      <div class="text-white max-w-2xl">
+        <h1 class="text-4xl md:text-5xl font-extrabold" style="font-family:Inter;">Inter-Disease AI Suite</h1>
+        <p class="mt-4 text-white/85 text-lg md:text-xl">
+          Explore cross-disease relationships, generate predictions, and visualize ML-powered biomarker links.
+        </p>
+
+        <div class="mt-6 flex gap-3">
+          <a href="{{ url_for('inter_disease') }}"
+             class="inline-flex items-center gap-3 bg-white/95 text-slate-900 font-semibold py-3 px-5 rounded-xl shadow-lg hover:scale-[1.02] transition">
+            Open Insights →
+          </a>
+
+          <a href="#predictions"
+             class="inline-flex items-center gap-2 border border-white/30 text-white/95 py-3 px-4 rounded-xl glass hover:scale-[1.02] transition">
+            Predict Now
+          </a>
+        </div>
+      </div>
+
+      <!-- Right / Card -->
+      <div class="w-full md:w-[480px]">
+        <div class="glass p-6 rounded-2xl shadow-2xl tilt reveal" data-reveal>
+          <div class="flex items-center gap-4">
+            <img src="{{ url_for('static', filename='inter.jpg') }}" class="w-20 h-20 rounded-xl object-cover shadow-inner">
+            <div>
+              <div class="text-sm text-white/80">Model Suite</div>
+              <div class="text-lg font-semibold text-white">Inter-Disease Insights</div>
+              <div class="mt-2 flex items-center gap-2">
+                <span class="accuracy-badge bg-white/95 text-slate-900">Accuracy 89.71%</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="mt-4 text-white/80 text-sm">
+            Explore shared biomarkers, correlated risks & symptom overlaps with SHAP visualization.
+          </p>
+        </div>
+      </div>
     </div>
+
+    <!-- Predictions Section -->
+    <section id="predictions" class="mt-14">
+      <h2 class="text-white text-2xl font-semibold mb-6">Disease Predictions</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Diabetes -->
+        <article class="glass p-6 rounded-2xl shadow-xl hover:-translate-y-2 hover:scale-[1.01] transition tilt reveal" data-reveal>
+          <div class="flex gap-4">
+            <img src="{{ url_for('static', filename='diabetes.png') }}" class="w-14 h-14 object-contain">
+            <div>
+              <h3 class="text-white font-semibold text-lg">Diabetes</h3>
+              <p class="text-white/80 text-sm mt-1">ML-based metabolic risk score.</p>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-between items-center">
+            <span class="accuracy-badge bg-white/95 text-slate-900">76.66%</span>
+            <a href="{{ url_for('diabetes') }}" class="bg-white/10 border border-white/20 text-white py-2 px-3 rounded-md text-sm">Predict</a>
+          </div>
+        </article>
+
+        <!-- Heart -->
+        <article class="glass p-6 rounded-2xl shadow-xl hover:-translate-y-2 hover:scale-[1.01] transition tilt reveal" data-reveal>
+          <div class="flex gap-4">
+            <img src="{{ url_for('static', filename='heartdisease.png') }}" class="w-14 h-14 object-contain">
+            <div>
+              <h3 class="text-white font-semibold text-lg">Heart Disease</h3>
+              <p class="text-white/80 text-sm mt-1">Cardiac risk estimation.</p>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-between items-center">
+            <span class="accuracy-badge bg-white/95 text-slate-900">81.66%</span>
+            <a href="{{ url_for('heartdisease') }}" class="bg-white/10 border border-white/20 text-white py-2 px-3 rounded-md text-sm">Predict</a>
+          </div>
+        </article>
+
+        <!-- Liver -->
+        <article class="glass p-6 rounded-2xl shadow-xl hover:-translate-y-2 hover:scale-[1.01] transition tilt reveal" data-reveal>
+          <div class="flex gap-4">
+            <img src="{{ url_for('static', filename='liver.jpeg') }}" class="w-14 h-14 object-contain">
+            <div>
+              <h3 class="text-white font-semibold text-lg">Liver Disease</h3>
+              <p class="text-white/80 text-sm mt-1">Hepatic health evaluation.</p>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-between items-center">
+            <span class="accuracy-badge bg-white/95 text-slate-900">67.24%</span>
+            <a href="{{ url_for('liverdisease') }}" class="bg-white/10 border border-white/20 text-white py-2 px-3 rounded-md text-sm">Predict</a>
+          </div>
+        </article>
+
+        <!-- Kidney -->
+        <article class="glass p-6 rounded-2xl shadow-xl hover:-translate-y-2 hover:scale-[1.01] transition tilt reveal" data-reveal>
+          <div class="flex gap-4">
+            <img src="{{ url_for('static', filename='download.jpeg') }}" class="w-14 h-14 object-contain">
+            <div>
+              <h3 class="text-white font-semibold text-lg">Kidney Disease</h3>
+              <p class="text-white/80 text-sm mt-1">Renal function risk prediction.</p>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-between items-center">
+            <span class="accuracy-badge bg-white/95 text-slate-900">98.71%</span>
+            <a href="{{ url_for('kidneydisease') }}" class="bg-white/10 border border-white/20 text-white py-2 px-3 rounded-md text-sm">Predict</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
   </div>
 </section>
 
+<script>
+  // Reveal Animation
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.15});
+  document.querySelectorAll('[data-reveal]').forEach(el=>obs.observe(el));
 
-<!-- Section: Disease Predictions -->
-<!-- Section: Disease Predictions -->
-<section class="section" style="margin-top: 60px;">
-
-  <div class="card-container" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px;">
-
-    <div class="card">
-      <img src="{{ url_for('static', filename='diabetes.png') }}" alt="Diabetes">
-      <h2>Diabetes Prediction</h2>
-      <p>Check your diabetes risk using medical indicators and ML insights.
-        <br>
-       <b> ACCURACY-76.66<b>
-      </p>
-      <a href="{{ url_for('diabetes') }}" class="btn">Predict</a>
-    </div>
-
-    <div class="card">
-      <img src="{{ url_for('static', filename='heartdisease.png') }}" alt="Heart Disease">
-      <h2>Heart Disease Prediction</h2>
-      <p>Evaluate your heart health using real data-driven predictions.
-        <br>
-       <b>ACCURACY-81.66</b>
-      </p>
-      <a href="{{ url_for('heartdisease') }}" class="btn">Predict</a>
-    </div>
-
-  
-
-
-
-    <div class="card">
-      <img src="{{ url_for('static', filename='liver.jpeg') }}" alt="Liver Disease">
-      <h2 style="margin-top: 70px;">Liver Disease Prediction</h2>
-      <p>Evaluate your liver health using real data-driven predictions.
-        <br>
-        <b>ACCURACY-67.24</b>
-      </p>
-      <a href="{{ url_for('liverdisease') }}" class="btn">Predict</a>
-    </div>
-
-    <div class="card">
-      <img src="{{ url_for('static', filename='download.jpeg') }}" alt="Kidney Disease">
-      <h2 style="margin-top: 55px;">Kidney Disease Prediction</h2>
-      <p>Assess kidney health using clinical parameters and AI models.
-        <br>
-        <b>ACCURACY-98.71</b>
-      </p>
-      <a href="{{ url_for('kidneydisease') }}" class="btn">Predict</a>
-    </div>
-
-  </div>
-</section>
-
+  // Tilt Effect
+  document.querySelectorAll('.tilt').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width/2) / r.width;
+      const y = (e.clientY - r.top - r.height/2) / r.height;
+      card.style.transform = `perspective(800px) rotateX(${(-y*6)}deg) rotateY(${(x*8)}deg)`;
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform = 'none'; });
+  });
+</script>
 
 {% endblock %}

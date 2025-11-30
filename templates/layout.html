@@ -1,33 +1,76 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>DiseaseLink AI</title>
+    <meta charset="UTF-8">
+    <title>{{ title if title else "DiseaseLink AI" }}</title>
+
+    {% if not no_default_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% endif %}
+
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    {% block head %}{% endblock %}
   </head>
-  <body>
-    <header>
-      <div class="navbar">
-        <h1 class="logo">DiseaseLink AI</h1>
-        <nav>
-          <ul class="menu">
-            <li><a href="{{ url_for('inter_disease') }}">Inter-Disease Insights</a></li>
-            <li><a href="{{ url_for('diabetes') }}">Diabetes</a></li>
-            <li><a href="{{ url_for('liverdisease') }}">Liver Disease</a></li>
-            <li><a href="{{ url_for('heartdisease') }}">Heart Disease</a></li>
-            <li><a href="{{ url_for('kidneydisease') }}">Kidney Disease</a></li>
-          </ul>
-        </nav>
-      </div>
+
+  <body class="bg-gray-50">
+
+    <!-- FIXED TAILWIND NAVBAR -->
+    <header class="w-full fixed top-0 left-0 bg-white/20 backdrop-blur-xl border-b border-white/30 z-50 shadow-sm">
+      <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+        <!-- Logo -->
+        <a href="{{ url_for('inter_disease') }}" class="text-2xl font-semibold text-gray-900">
+          DiseaseLink AI
+        </a>
+
+        <!-- Desktop Navigation -->
+        <ul class="hidden md:flex gap-6 text-gray-800 font-medium">
+          <li><a href="{{ url_for('inter_disease') }}" class="hover:text-orange-500">Inter-Disease Insights</a></li>
+          <li><a href="{{ url_for('diabetes') }}" class="hover:text-orange-500">Diabetes</a></li>
+          <li><a href="{{ url_for('liverdisease') }}" class="hover:text-orange-500">Liver Disease</a></li>
+          <li><a href="{{ url_for('heartdisease') }}" class="hover:text-orange-500">Heart Disease</a></li>
+          <li><a href="{{ url_for('kidneydisease') }}" class="hover:text-orange-500">Kidney Disease</a></li>
+        </ul>
+
+        <!-- Mobile Menu Icon -->
+        <div class="md:hidden text-gray-900 text-2xl cursor-pointer" onclick="toggleMenu()">
+          ☰
+        </div>
+      </nav>
+
+      <!-- Mobile Dropdown -->
+      <ul id="mobileMenu" class="hidden flex-col bg-white/80 backdrop-blur-xl md:hidden px-6 py-4 space-y-3 text-gray-900 font-medium border-t border-gray-200">
+        <li><a href="{{ url_for('inter_disease') }}" class="hover:text-orange-500">Inter-Disease Insights</a></li>
+        <li><a href="{{ url_for('diabetes') }}" class="hover:text-orange-500">Diabetes</a></li>
+        <li><a href="{{ url_for('liverdisease') }}" class="hover:text-orange-500">Liver Disease</a></li>
+        <li><a href="{{ url_for('heartdisease') }}" class="hover:text-orange-500">Heart Disease</a></li>
+        <li><a href="{{ url_for('kidneydisease') }}" class="hover:text-orange-500">Kidney Disease</a></li>
+      </ul>
+
+      <script>
+        function toggleMenu() {
+          document.getElementById("mobileMenu").classList.toggle("hidden");
+        }
+      </script>
     </header>
 
-    <main class="container">
-      {% block content %}
-      {% endblock %}
+    <!-- Push Content Down -->
+    <div class="pt-24"></div>
+
+    <!-- Main Content -->
+    <main class="page-container">
+      {% block content %}{% endblock %}
     </main>
 
-    <footer>
-      <p>© 2025 Multiple Disease Predictor | Built with  using Flask & ML</p>
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-gray-600">
+      © 2025 Multiple Disease Predictor | Built with Flask & ML
     </footer>
+
   </body>
 </html>

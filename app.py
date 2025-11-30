@@ -226,8 +226,10 @@ def predictkidney():
     # ----------------------------
     # Original Prediction
     # ----------------------------
-    int_features = [x for x in request.form.values()]   # fetch form values
-    processed_features_kidney = [np.array(int_features, dtype=float)]
+    feature_keys = ["ane", "bp", "sg", "sod", "pot", "hemo", "pcv", "pc", "age"]
+    int_features = [float(request.form.get(key, 0.0)) for key in feature_keys]
+    int_features.insert(8, 125.0)  # Hardcoded ID
+    processed_features_kidney = [np.array(int_features)]
 
     prediction = kidney_predict.predict(processed_features_kidney)
     display_text = (
@@ -515,12 +517,14 @@ def predict():
     for feat in features:
         raw = request.form.get(feat)
         provided[feat] = raw if raw is not None else ""
-        if feat in ["gender", "smoking", "high_blood_pressure"]:
+        if feat == 'id':
+            val = 125.0
+        elif feat in ["gender", "smoking", "high_blood_pressure"]:
             val = feature_means.get(feat, 0.0) if raw in [None, ""] else (1.0 if raw == "1" else 0.0)
         else:
             try:
-                val = float(raw) if raw.strip() != "" else feature_means.get(feat, 0.0)
-            except Exception:
+                val = float(raw) if raw and raw.strip() != "" else feature_means.get(feat, 0.0)
+            except (ValueError, TypeError):
                 flash(f"Invalid value for {feat}. Using mean.", "warning")
                 val = feature_means.get(feat, 0.0)
         input_vals_raw.append(val)
